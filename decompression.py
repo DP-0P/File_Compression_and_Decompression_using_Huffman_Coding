@@ -10,19 +10,14 @@ class HuffmanDeCompressor:
     def decompressFile(self, inputFileName: str):
         self.fileName = inputFileName.split('.')[0]
         self.fileExtension = inputFileName.split('.')[1]
-
         outputFileName = f"{self.fileName}.{self.fileExtension}"
-
         fileBytes: str = self.readFile(inputFileName)
         decodedBytes: list = self.decode(fileBytes)
-
         self.save(outputFileName, decodedBytes)
 
     def readFile(self, inputFileName: str):
         inputFile = open(inputFileName, "rb")
         encodedBytes = ""
-
-        # Read the file byte by byte
         byte = inputFile.read(1)
 
         while len(byte) > 0:
@@ -32,17 +27,11 @@ class HuffmanDeCompressor:
         return encodedBytes
 
     def decode(self, encodedBytes: str):
-        # Convert bytes to stream (list) of bits.
         bitsStream = list(encodedBytes)
-        # --> bits stream contains (tree,padding,compressed data)
         tree = self.decodeTree(bitsStream)
         reversedLookupTable = self.buildReversedLookupTable(tree)
-        # --> bits stream contains (padding,compressed data)
         bitsStream = self.removePadding(bitsStream)
-        # --> bits stream contains (compressed data)
-
         encodedBytes = ''.join(bitsStream)
-
         outputBytes = []
         byteKey = ''
 
@@ -57,14 +46,11 @@ class HuffmanDeCompressor:
         return outputBytes
 
     def decodeTree(self, bitsStream):
-        # bitsStream: List of bits
 
         bit = bitsStream[0]
         del bitsStream[0]
 
         if bit == "1":
-            # Leaf node
-            # Read the byte value
             byte = ""
             for _ in range(8):
                 byte += bitsStream[0]
@@ -72,7 +58,6 @@ class HuffmanDeCompressor:
 
             return Node(int(byte, 2))
         else:
-            # Internal node
             left = self.decodeTree(bitsStream)
             right = self.decodeTree(bitsStream)
 
@@ -91,12 +76,9 @@ class HuffmanDeCompressor:
 
         self.buildReversedLookupTableImpl(huffmanTree, "", lookupTable)
 
-        # If the file contains single repeated byte
         if len(lookupTable) == 1:
             key = next(iter(lookupTable))
             lookupTable[key] = '1'
-
-        # Return reversed lookupTable
 
         return {v: k for k, v in lookupTable.items()}
 
