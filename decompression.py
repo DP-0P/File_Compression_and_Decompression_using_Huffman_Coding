@@ -118,14 +118,5 @@ class HuffmanDeCompressor:
         for i in range(0, len(outputBytes), 8):
             b_arr.append(int(outputBytes[i:i + 8], 2))
 
-        outputFile = open(f"OP-{outputFileName}", "wb")
+        outputFile = open(f"OG-{outputFileName}", "wb")
         outputFile.write(b_arr)
-
-    def decompress_folder(self, folder):
-
-        total_bytes: str = self.readFile(folder)
-        decoded_bytes: list = self.decode(total_bytes)
-        splitted = array.array('B', decoded_bytes).tobytes().split(b'\x11\x22\x33')
-
-        for i, file in enumerate(splitted[0:len(splitted) - 1]):
-            self.save(str(i) + '.' + splitted[i][0:3].decode("utf-8"), splitted[i][3:len(splitted[i])])

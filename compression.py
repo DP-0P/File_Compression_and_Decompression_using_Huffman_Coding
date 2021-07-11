@@ -103,7 +103,7 @@ class HuffmanCompressor:
     def save(self, tree: HuffmanNode, encodedBytes: str):
         encodedTree = self.encodeTree(tree, '')
         outputBytes = self.addPadding(encodedTree, encodedBytes)
-        outputFile = open(self.fileName + '.huf', "wb")
+        outputFile = open(self.fileName + '.dp', "wb")
 
         b_arr = bytearray()
 
@@ -114,41 +114,10 @@ class HuffmanCompressor:
 
     def calcCompressionRatio(self):
         inputFileName = self.fileName
-        outputFileName = self.fileName + '.huf'
+        outputFileName = self.fileName + '.dp'
 
         sizeBefore = os.path.getsize(inputFileName)
         sizeAfter = os.path.getsize(outputFileName)
         percent = round(100 - sizeAfter / sizeBefore * 100, 1)
 
-        print(f"before: {sizeBefore}bytes, after: {sizeAfter}bytes, "f"compression {percent}%")
-
-    def compress_folder(self, folder):
-
-        total_bytes = b""
-        for file in os.listdir(folder):
-            total_bytes += bytes(file.split('.')[1], 'utf8') + open(folder + '\\' + file, 'rb').read() + b'\x11\x22\x33'
-
-        frequency_table = self.buildFrequencyTable(total_bytes)
-        huffman_tree = self.buildTree(frequency_table)
-        lookup_table = self.buildLookupTable(huffman_tree)
-        encoded_bytes = self.buildEncodedBytes(total_bytes, lookup_table)
-
-        self.save(huffman_tree, encoded_bytes)
-        # self.calcCompressionRatio()
-
-# from PIL import Image
-# from numpy import asarray
-
-# print("hello")
-# # file = open(r"test.png","r")
-# # file.read(9)
-# # print(file)
-# im = Image.open("test.png")
-# print(im.format)
-# print(im.size)
-# print(im.mode)
-# # im.show()
-# numpydata = asarray(im)
-# # print(type(numpydata))
-# # print(numpydata.shape)
-# print(numpydata)
+        print(f"Before: {sizeBefore} bytes\nAfter: {sizeAfter} bytes\n"f"Compressed Percentage {percent}%")
