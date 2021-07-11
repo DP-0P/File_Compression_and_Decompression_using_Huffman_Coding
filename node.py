@@ -1,4 +1,4 @@
-class HuffmanNode:
+class Node:
     def __init__(self, byte, freq=0, left=None, right=None):
         self.byte = byte
         self.freq = freq

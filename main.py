@@ -13,15 +13,16 @@ def main():
         encoder = HuffmanCompressor()
         name = input('Enter Name: ')
         encoder.compressFile(name)
+        
     elif value == '2':
         decompressor = HuffmanDeCompressor()
         name = input('Enter Name: ')
         decompressor.decompressFile(name)
+        
     elif value== '0':
         sys.exit("Program Terminated...")
 
     print("Time Elapsed: %s seconds" % (time.time() - startTime)+"\n")
-
 
 while True:
     main()

@@ -1,15 +1,7 @@
 import os
 import ctypes
 from queue import PriorityQueue
-from node import HuffmanNode
-
-
-class FILE_META_INFO(ctypes.Structure):
-    _fields_ = [
-        # ('name', ctypes.),
-        # ('extension', XINPUT_GAMEPAD),
-    ]
-
+from node import Node
 
 class HuffmanCompressor:
     def __init__(self):
@@ -19,7 +11,6 @@ class HuffmanCompressor:
     def compressFile(self, inputFileName: str):
         self.fileName = inputFileName
 
-        # Read file as binary
         bytesList = open(inputFileName, 'rb').read()
 
         frequencyTable = self.buildFrequencyTable(bytesList)
@@ -31,10 +22,8 @@ class HuffmanCompressor:
         self.calcCompressionRatio()
 
     def buildFrequencyTable(self, bytesList):
-        # Convert bytes list to sorted set.
         bytesSet = set(bytesList)
 
-        # Initialize frequencies dictionary.
         frequencyTable = {byte: 0 for byte in bytesSet}
 
         # Calculate frequency of each byte.
@@ -45,17 +34,17 @@ class HuffmanCompressor:
 
     def buildTree(self, frequencyTable):
         for byte, frequency in frequencyTable.items():
-            self.queue.put(HuffmanNode(byte, frequency))
+            self.queue.put(Node(byte, frequency))
 
         # Build tree
         while self.queue.qsize() > 1:
             left, right = self.queue.get(), self.queue.get()
-            parent = HuffmanNode(None, left.freq + right.freq, left, right)
+            parent = Node(None, left.freq + right.freq, left, right)
             self.queue.put(parent)
 
         return self.queue.get()
 
-    def buildLookupTable(self, huffmanTree: HuffmanNode):
+    def buildLookupTable(self, huffmanTree: Node):
         lookupTable = {}
 
         self.buildLookupTableImpl(huffmanTree, "", lookupTable)
@@ -67,7 +56,7 @@ class HuffmanCompressor:
 
         return lookupTable
 
-    def buildLookupTableImpl(self, node: HuffmanNode, code, lookupTable):
+    def buildLookupTableImpl(self, node: Node, code, lookupTable):
         if node.isLeaf():
             lookupTable[node.byte] = code
         else:
@@ -82,7 +71,7 @@ class HuffmanCompressor:
 
         return encodedBytes
 
-    def encodeTree(self, node: HuffmanNode, text):
+    def encodeTree(self, node: Node, text):
         if node.isLeaf():
             text += "1"
             text += f"{node.byte:08b}"
@@ -100,7 +89,7 @@ class HuffmanCompressor:
 
         return f"{encodedTree}{num:08b}{encodedBytes}"
 
-    def save(self, tree: HuffmanNode, encodedBytes: str):
+    def save(self, tree: Node, encodedBytes: str):
         encodedTree = self.encodeTree(tree, '')
         outputBytes = self.addPadding(encodedTree, encodedBytes)
         outputFile = open(self.fileName + '.dp', "wb")

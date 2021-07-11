@@ -1,4 +1,4 @@
-from node import HuffmanNode
+from node import Node
 import array
 
 
@@ -70,13 +70,13 @@ class HuffmanDeCompressor:
                 byte += bitsStream[0]
                 del bitsStream[0]
 
-            return HuffmanNode(int(byte, 2))
+            return Node(int(byte, 2))
         else:
             # Internal node
             left = self.decodeTree(bitsStream)
             right = self.decodeTree(bitsStream)
 
-            return HuffmanNode(None, left=left, right=right)
+            return Node(None, left=left, right=right)
 
     def removePadding(self, bitsStream):
         numOfZeros_Bin = bitsStream[:8]
@@ -86,7 +86,7 @@ class HuffmanDeCompressor:
 
         return bitsStream
 
-    def buildReversedLookupTable(self, huffmanTree: HuffmanNode):
+    def buildReversedLookupTable(self, huffmanTree: Node):
         lookupTable = {}
 
         self.buildReversedLookupTableImpl(huffmanTree, "", lookupTable)
@@ -100,7 +100,7 @@ class HuffmanDeCompressor:
 
         return {v: k for k, v in lookupTable.items()}
 
-    def buildReversedLookupTableImpl(self, node: HuffmanNode, code, lookupTable):
+    def buildReversedLookupTableImpl(self, node: Node, code, lookupTable):
         if node.isLeaf():
             lookupTable[node.byte] = code
         else:
