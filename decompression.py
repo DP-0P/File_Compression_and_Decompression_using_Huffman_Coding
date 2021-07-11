@@ -118,5 +118,5 @@ class HuffmanDeCompressor:
         for i in range(0, len(outputBytes), 8):
             b_arr.append(int(outputBytes[i:i + 8], 2))
 
-        outputFile = open(f"OG-{outputFileName}", "wb")
+        outputFile = open(f"OG{outputFileName}", "wb")
         outputFile.write(b_arr)
