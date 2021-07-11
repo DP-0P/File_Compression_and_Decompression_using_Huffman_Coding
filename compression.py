@@ -1,5 +1,4 @@
 import os
-import ctypes
 from queue import PriorityQueue
 from node import Node
 
@@ -26,7 +25,6 @@ class HuffmanCompressor:
 
         frequencyTable = {byte: 0 for byte in bytesSet}
 
-        # Calculate frequency of each byte.
         for byte in bytesList:
             frequencyTable[byte] += 1
 
@@ -36,7 +34,6 @@ class HuffmanCompressor:
         for byte, frequency in frequencyTable.items():
             self.queue.put(Node(byte, frequency))
 
-        # Build tree
         while self.queue.qsize() > 1:
             left, right = self.queue.get(), self.queue.get()
             parent = Node(None, left.freq + right.freq, left, right)
@@ -49,7 +46,6 @@ class HuffmanCompressor:
 
         self.buildLookupTableImpl(huffmanTree, "", lookupTable)
 
-        # If the file contains single repeated byte
         if len(lookupTable) == 1:
             key = next(iter(lookupTable))
             lookupTable[key] = '1'
