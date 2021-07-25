@@ -1,1 +1,1 @@
-# Image_Compressor_using_Huffman_Coding
+# File Compression and Decompression
