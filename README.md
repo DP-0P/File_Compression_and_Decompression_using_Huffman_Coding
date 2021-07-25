@@ -1,6 +1,6 @@
 # File Compression and Decompression
 
-##To run the script -
+## To run the script -
 * Download the code.
 * Run `python main.py`.
 * Enter the path of the file you want to compess.
