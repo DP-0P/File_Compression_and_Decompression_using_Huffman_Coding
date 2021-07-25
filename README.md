@@ -1,4 +1,5 @@
 # File Compression and Decompression
+
 ##To run the script -
 * Download the code.
 * Run `python main.py`.
