@@ -7,7 +7,7 @@ class HuffmanCompressor:
         self.fileName = ''
         self.queue = PriorityQueue()
 
-    def compressFile(self, inputFileName: str):
+    def compress(self, inputFileName: str):
         self.fileName = inputFileName
         bytesList = open(inputFileName, 'rb').read()
         frequencyTable = self.buildFrequencyTable(bytesList)
@@ -15,7 +15,7 @@ class HuffmanCompressor:
         lookupTable = self.buildLookupTable(huffmanTree)
         encodedBytes = self.buildEncodedBytes(bytesList, lookupTable)
         self.save(huffmanTree, encodedBytes)
-        self.calcCompressionRatio()
+        self.CompressionRatio()
 
     def buildFrequencyTable(self, bytesList):
         bytesSet = set(bytesList)
@@ -79,7 +79,7 @@ class HuffmanCompressor:
             b_arr.append(int(outputBytes[i:i + 8], 2))
         outputFile.write(b_arr)
 
-    def calcCompressionRatio(self):
+    def CompressionRatio(self):
         inputFileName = self.fileName
         outputFileName = self.fileName + '.dp'
         sizeBefore = os.path.getsize(inputFileName)

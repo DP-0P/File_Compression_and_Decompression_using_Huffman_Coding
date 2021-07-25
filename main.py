@@ -1,5 +1,6 @@
 import time
 import sys
+import os
 
 from decompression import HuffmanDeCompressor
 from compression import HuffmanCompressor
@@ -10,14 +11,20 @@ def main():
     if value == '1':
         encoder = HuffmanCompressor()
         name = input('Enter Location: ')
-        encoder.compressFile(name)
+        encoder.compress(name)
+        print("Time Elapsed: %s seconds" % (time.time() - startTime)+"\n")
     elif value == '2':
         decompressor = HuffmanDeCompressor()
         name = input('Enter Location: ')
-        decompressor.decompressFile(name)
+        fileName = os.path.splitext(name)
+        extension = fileName[1]
+        if extension == '.dp':
+            decompressor.decompress(name)
+            print("Time Elapsed: %s seconds" % (time.time() - startTime)+"\n")
+        else:
+            print('File can\'t be decompressed before compressing')
     elif value == '0':
         sys.exit("Program Terminated...")
-    print("Time Elapsed: %s seconds" % (time.time() - startTime)+"\n")
 
 while True:
     main()

@@ -5,7 +5,7 @@ class HuffmanDeCompressor:
         self.fileName = ''
         self.fileExtension = ''
 
-    def decompressFile(self, inputFileName: str):
+    def decompress(self, inputFileName: str):
         self.fileName = inputFileName.split('.')[0]
         self.fileExtension = inputFileName.split('.')[1]
         outputFileName = f"{self.fileName}.{self.fileExtension}"
